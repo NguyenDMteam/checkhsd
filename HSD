@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<base target="_top">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hệ Thống Quản Lý HSD - Highlands Coffee Theme</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --hl-red: #a6192e;
+    --hl-red-dark: #881324;
+    --hl-beige: #fbf8f3;
+    --hl-beige-dark: #f2eae0;
+    --hl-brown: #3d2314;
+    --hl-card-bg: #ffffff;
+    --hl-border: #e6ded5;
+    --hl-text-muted: #78695c;
+  }
+
+  body {
+    background-color: var(--hl-beige);
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--hl-brown);
+    min-height: 100vh;
+  }
+
+  /* HIGHLANDS HEADER NAVBAR */
+  .highlands-navbar {
+    background: linear-gradient(135deg, var(--hl-red) 0%, var(--hl-red-dark) 100%);
+    color: #ffffff;
+    padding: 14px 0;
+    border-bottom: 3px solid #6b0c1b;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 15px rgba(136, 19, 36, 0.2);
+  }
+
+  .hl-text-brand {
+    font-weight: 800;
+    font-size: 1.35rem;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: #ffffff;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    margin-bottom: 0;
+    line-height: 1;
+  }
+
+  /* HIGHLANDS CARD CONTAINER */
+  .highlands-card {
+    background: var(--hl-card-bg);
+    border: 1px solid var(--hl-border);
+    border-radius: 18px;
+    box-shadow: 0 4px 16px rgba(61, 35, 20, 0.04);
+    transition: all 0.2s ease;
+  }
+
+  .login-card {
+    max-width: 420px;
+    margin: 8vh auto;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 12px 32px rgba(136, 19, 36, 0.15);
+    border: 1px solid var(--hl-border);
+  }
+
+  .login-header {
+    background: linear-gradient(135deg, var(--hl-red) 0%, var(--hl-red-dark) 100%);
+    color: #fff;
+    padding: 32px 24px;
+    text-align: center;
+  }
+
+  /* HIGHLANDS BUTTONS & BADGES */
+  .btn-hl-red {
+    background-color: var(--hl-red);
+    color: #ffffff;
+    border: none;
+    border-radius: 100px;
+    font-weight: 700;
+    padding: 8px 22px;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 6px rgba(166, 25, 46, 0.25);
+  }
+  .btn-hl-red:hover {
+    background-color: var(--hl-red-dark);
+    color: #ffffff;
+    box-shadow: 0 4px 10px rgba(136, 19, 36, 0.35);
+  }
+
+  .btn-hl-outline {
+    background-color: transparent;
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 100px;
+    font-weight: 600;
+    padding: 6px 16px;
+  }
+  .btn-hl-outline:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+  }
+
+  /* KPI STATS CARD HIGHLANDS STYLE */
+  .kpi-card {
+    background: var(--hl-beige-dark);
+    border: 1px solid var(--hl-border);
+    border-radius: 16px;
+    padding: 18px 20px;
+  }
+  .kpi-card .lbl {
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--hl-text-muted);
+  }
+  .kpi-card .num {
+    font-size: 2.2rem;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-top: 4px;
+  }
+
+  /* CUSTOM TABLE HIGHLANDS STYLE */
+  .custom-table {
+    border-collapse: separate;
+    border-spacing: 0 8px;
+  }
+  .custom-table tr {
+    background: #ffffff;
+    box-shadow: 0 1px 4px rgba(61, 35, 20, 0.03);
+  }
+  .custom-table td, .custom-table th {
+    padding: 14px 18px;
+    vertical-align: middle;
+    border-top: 1px solid var(--hl-border);
+    border-bottom: 1px solid var(--hl-border);
+  }
+  .custom-table tr td:first-child {
+    border-left: 1px solid var(--hl-border);
+    border-radius: 12px 0 0 12px;
+  }
+  .custom-table tr td:last-child {
+    border-right: 1px solid var(--hl-border);
+    border-radius: 0 12px 12px 0;
+  }
+
+  tr.status-expired td {
+    background-color: #fff0f2 !important;
+    border-color: #fecdd3 !important;
+  }
+  tr.status-warning td {
+    background-color: #fffbeb !important;
+    border-color: #fef3c7 !important;
+  }
+
+  /* BỘ NÚT TĂNG GIẢM SỐ LƯỢNG */
+  .qty-control {
+    display: inline-flex;
+    align-items: center;
+    background: var(--hl-beige-dark);
+    border-radius: 100px;
+    padding: 3px;
+    border: 1px solid var(--hl-border);
+  }
+  .qty-btn {
+    width: 26px;
+    height: 26px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: #ffffff;
+    border-radius: 50%;
+    font-weight: 700;
+    color: var(--hl-brown);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    transition: background 0.15s;
+  }
+  .qty-btn:hover { background: var(--hl-beige); }
+  .qty-input {
+    width: 40px;
+    text-align: center;
+    border: none;
+    background: transparent;
+    font-weight: 800;
+    font-size: 0.9rem;
+    color: var(--hl-brown);
+  }
+  .qty-input:focus { outline: none; }
+
+  /* NAV PILLS HIGHLANDS STYLE */
+  .nav-pills .nav-link {
+    color: var(--hl-text-muted);
+    font-weight: 700;
+    border-radius: 100px;
+    padding: 8px 20px;
+    font-size: 0.85rem;
+  }
+  .nav-pills .nav-link.active {
+    background-color: var(--hl-red);
+    color: #ffffff;
+  }
+
+  #toast-container {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+  }
+</style>
+</head>
+<body>
+
+<div id="toast-container"></div>
+
+<!-- MÀN HÌNH ĐĂNG NHẬP -->
+<div id="v-login" class="container">
+  <div class="highlands-card login-card">
+    <div class="login-header">
+      <h3 class="hl-text-brand mb-2">Highlands Coffee</h3>
+      <h5 class="fw-bold mb-1 fs-6 text-white-50">Kiểm Tra HSD Nguyên Liệu</h5>
+      <p class="small opacity-75 mb-0" style="font-size: 0.8rem;">Hệ thống quản lý hạn sử dụng cho cửa hàng</p>
+    </div>
+    <div class="p-4 bg-white">
+      <div class="mb-3">
+        <label class="form-label fw-bold small text-dark">TÀI KHOẢN</label>
+        <input id="u" class="form-control bg-light border-0 py-2 rounded-3" placeholder="Mã cửa hàng (VD: 00294)">
+      </div>
+      <div class="mb-4">
+        <label class="form-label fw-bold small text-dark">MẬT KHẨU</label>
+        <input id="p" type="password" class="form-control bg-light border-0 py-2 rounded-3" placeholder="Mật khẩu">
+      </div>
+      <button id="btnLogin" class="btn btn-hl-red w-100 py-2.5" onclick="doLogin()">Đăng nhập System</button>
+    </div>
+  </div>
+</div>
+
+<!-- GIAO DIỆN CHÍNH -->
+<div id="v-app" class="d-none">
+  <!-- HIGHLANDS HEADER NAVBAR -->
+  <header class="highlands-navbar">
+    <div class="container d-flex align-items-center justify-content-between flex-wrap gap-2">
+      <div class="d-flex align-items-center gap-3">
+        <div>
+          <h1 class="hl-text-brand">Highlands Coffee</h1>
+          <div class="d-flex align-items-center gap-2 mt-1">
+            <span class="fw-bold text-white text-uppercase" style="font-size: 0.85rem;" id="ui-title">--</span>
+            <span class="text-white-50" style="font-size: 0.75rem;" id="ui-sub">--</span>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex gap-2">
+        <button id="btnBack" class="btn btn-hl-outline btn-sm d-none" onclick="showAdmin()"><i class="bi bi-arrow-left me-1"></i> Về Admin</button>
+        <button class="btn btn-hl-outline btn-sm" onclick="logout()"><i class="bi bi-box-arrow-right me-1"></i> Thoát</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container py-4 pb-5">
+    <!-- CỬA HÀNG VIEW -->
+    <div id="v-store" class="d-none">
+      <div class="row g-3 mb-4">
+        <div class="col-4">
+          <div class="kpi-card">
+            <div class="lbl">TỔNG SẢN PHẨM</div>
+            <div class="num" style="color: var(--hl-brown);" id="k-total">0</div>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="kpi-card">
+            <div class="lbl text-warning">SẮP HẾT HẠN</div>
+            <div class="num text-warning" id="k-soon">0</div>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="kpi-card">
+            <div class="lbl" style="color: var(--hl-red);">ĐÃ HẾT HẠN</div>
+            <div class="num" style="color: var(--hl-red);" id="k-exp">0</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FORM THÊM SẢN PHẨM -->
+      <div class="highlands-card p-4 mb-4">
+        <h6 class="fw-bold mb-3" style="color: var(--hl-brown);"><i class="bi bi-plus-circle-fill me-2" style="color: var(--hl-red);"></i>Ghi nhận / Thêm sản phẩm mới</h6>
+        <div class="row g-3 align-items-end">
+          <div class="col-12 col-md-5">
+            <label class="form-label small fw-bold text-muted mb-1">TÊN NGUYÊN LIỆU / SẢN PHẨM</label>
+            <input id="i-name" class="form-control border border-secondary-subtle py-2 rounded-3" list="productList" placeholder="Chọn hoặc nhập tên sản phẩm...">
+            <datalist id="productList"></datalist>
+          </div>
+          <div class="col-6 col-md-3">
+            <label class="form-label small fw-bold text-muted mb-1">NGÀY HẾT HẠN</label>
+            <input id="i-exp" type="date" class="form-control border border-secondary-subtle py-2 rounded-3">
+          </div>
+          <div class="col-6 col-md-2">
+            <label class="form-label small fw-bold text-muted mb-1">SỐ LƯỢNG</label>
+            <input id="i-qty" type="number" min="1" value="1" class="form-control border border-secondary-subtle py-2 rounded-3">
+          </div>
+          <div class="col-12 col-md-2">
+            <button class="btn btn-hl-red w-100 py-2" onclick="addItem()"><i class="bi bi-plus-lg me-1"></i> Ghi nhận</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- BẢNG DANH SÁCH -->
+      <div class="highlands-card p-4">
+        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+          <h6 class="fw-bold mb-0" style="color: var(--hl-brown);"><i class="bi bi-grid-3x3-gap-fill me-2" style="color: var(--hl-red);"></i>Danh sách hạn sử dụng</h6>
+          <button class="btn btn-hl-red btn-sm fw-bold px-3 py-2 rounded-pill" onclick="sendMail()"><i class="bi bi-envelope-at me-1"></i> Gửi Mail Cảnh Báo</button>
+        </div>
+        <div class="table-responsive">
+          <table class="table custom-table align-middle mb-0">
+            <thead>
+              <tr class="text-muted small">
+                <th>SẢN PHẨM</th>
+                <th>NGÀY HẾT HẠN</th>
+                <th class="text-center">SỐ LƯỢNG</th>
+                <th>TÌNH TRẠNG</th>
+                <th class="text-end">THAO TÁC</th>
+              </tr>
+            </thead>
+            <tbody id="tb-items"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ADMIN VIEW -->
+    <div id="v-admin" class="d-none">
+      <div class="row g-3 mb-4">
+        <div class="col-6 col-md-3"><div class="kpi-card"><div class="lbl">CỬA HÀNG</div><div class="num" style="color: var(--hl-brown);" id="a-st">0</div></div></div>
+        <div class="col-6 col-md-3"><div class="kpi-card"><div class="lbl text-warning">SẮP HẾT HSD</div><div class="num text-warning" id="a-soon">0</div></div></div>
+        <div class="col-6 col-md-3"><div class="kpi-card"><div class="lbl" style="color: var(--hl-red);">ĐÃ HẾT HSD</div><div class="num" style="color: var(--hl-red);" id="a-exp">0</div></div></div>
+        <div class="col-6 col-md-3"><div class="kpi-card"><div class="lbl text-secondary">CHƯA GHI NHẬN >7 NGÀY</div><div class="num text-secondary" id="a-idle">0</div></div></div>
+      </div>
+
+      <ul class="nav nav-pills mb-3 gap-2">
+        <li class="nav-item"><button class="nav-link active" data-bs-toggle="pill" data-bs-target="#t-over">Tổng quan</button></li>
+        <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#t-master">Master Data</button></li>
+        <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#t-mail">Email Cửa Hàng</button></li>
+      </ul>
+
+      <div class="tab-content">
+        <div class="tab-pane fade show active" id="t-over">
+          <div class="highlands-card p-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h6 class="fw-bold mb-0" style="color: var(--hl-brown);">Tình trạng cửa hàng</h6>
+              <button class="btn btn-hl-red btn-sm fw-bold px-3 py-2 rounded-pill" onclick="sendAll()"><i class="bi bi-send-check me-1"></i> Gửi Mail Tất Cả</button>
+            </div>
+            <div class="table-responsive">
+              <table class="table custom-table align-middle mb-0">
+                <thead><tr class="text-muted small"><th>CỬA HÀNG</th><th>TẦN SUẤT</th><th>LẦN CUỐI</th><th>TRẠNG THÁI</th><th class="text-center">SẮP HH</th><th class="text-center">ĐÃ HH</th><th class="text-end">THAO TÁC</th></tr></thead>
+                <tbody id="tb-admin"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-pane fade" id="t-master">
+          <div class="highlands-card p-3 mb-3">
+            <div class="row g-2 align-items-end">
+              <div class="col-9"><input id="m-new-name" class="form-control border border-secondary-subtle py-2 rounded-3" placeholder="Tên nguyên liệu mới..."></div>
+              <div class="col-3"><button class="btn btn-hl-red w-100 py-2" onclick="addMasterItem()">Thêm</button></div>
+            </div>
+          </div>
+          <div class="highlands-card p-3"><div class="table-responsive"><table class="table custom-table align-middle mb-0"><tbody id="tb-master"></tbody></table></div></div>
+        </div>
+
+        <div class="tab-pane fade" id="t-mail">
+          <div class="highlands-card p-4">
+            <div class="table-responsive">
+              <table class="table custom-table align-middle mb-0">
+                <thead><tr class="text-muted small"><th>CỬA HÀNG</th><th>MÃ CH</th><th>EMAIL</th><th class="text-end">THAO TÁC</th></tr></thead>
+                <tbody id="tb-mail"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+const API_URL = "https://script.google.com/macros/s/AKfycbx9nQiR23lZBOnqWGoNXoAekuOeXmPjLzQzhCrCh3J9VfxATFF4dvJNif4198CAmwzj1w/exec";
+
+let S = null, CUR = null, RAW_MASTER = [];
+const $ = s => document.querySelector(s);
+
+async function call(action, ...payload) {
+  if (typeof google !== 'undefined' && google.script && google.script.run) {
+    return new Promise((ok, no) => {
+      google.script.run.withSuccessHandler(ok).withFailureHandler(err => { toast(err.message || err, false); no(err); })[action](...payload);
+    });
+  }
+  try {
+    const res = await fetch(API_URL, {
+      method: "POST",
+      mode: "cors",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({ action: action, payload: JSON.stringify(payload) })
+    });
+    const data = await res.json();
+    if (!data.success) throw new Error(data.error);
+    return data.data;
+  } catch (err) {
+    toast((err && err.message || err).toString(), false);
+    throw err;
+  }
+}
+
+function toast(msg, ok = true) {
+  const container = $('#toast-container');
+  container.innerHTML = `<div class="alert alert-${ok ? 'success' : 'danger'} shadow-lg border-0 rounded-pill mb-0 py-2 px-4 fw-bold">${msg}</div>`;
+  setTimeout(() => container.innerHTML = '', 3500);
+}
+
+const fmt = d => d ? d : '—';
+function badge(d) {
+  if (d < 0) return '<span class="badge rounded-pill px-3 py-1.5" style="background-color: var(--hl-red); color: #ffffff;">Đã hết hạn</span>';
+  if (d <= 1) return `<span class="badge rounded-pill px-3 py-1.5" style="background-color: var(--hl-red); color: #ffffff;">${d === 0 ? 'Hết hạn hôm nay' : 'Còn 1 ngày'}</span>`;
+  if (d <= 3) return `<span class="badge bg-warning text-dark rounded-pill px-3 py-1.5">Còn ${d} ngày</span>`;
+  return `<span class="badge bg-success rounded-pill px-3 py-1.5">Còn ${d} ngày</span>`;
+}
+const rowCls = d => d < 0 ? 'status-expired' : d <= 3 ? 'status-warning' : '';
+
+async function doLogin() {
+  try {
+    S = await call('login', $('#u').value, $('#p').value);
+    $('#v-login').classList.add('d-none'); $('#v-app').classList.remove('d-none');
+    S.role === 'admin' ? showAdmin() : openStore(S.code, false);
+  } catch (e) {}
+}
+
+function logout() { S = null; CUR = null; $('#v-app').classList.add('d-none'); $('#v-login').classList.remove('d-none'); $('#p').value = ''; }
+
+async function showAdmin() {
+  $('#v-store').classList.add('d-none'); $('#v-admin').classList.remove('d-none'); $('#btnBack').classList.add('d-none');
+  $('#ui-title').textContent = 'Trang Quản Lý DM';
+  $('#ui-sub').textContent = 'Tổng quan theo dõi hạn sử dụng toàn bộ hệ thống';
+  
+  const res = await call('getAdmin', S.token);
+  const list = res.list; RAW_MASTER = res.masterList || [];
+  
+  $('#a-st').textContent = list.length;
+  $('#a-soon').textContent = list.reduce((a, x) => a + x.soon, 0);
+  $('#a-exp').textContent = list.reduce((a, x) => a + x.expired, 0);
+  $('#a-idle').textContent = list.filter(x => x.status === 'secondary').length;
+  
+  $('#tb-admin').innerHTML = list.map(x => `<tr>
+    <td><div class="fw-bold" style="color: var(--hl-brown);">${x.name}</div><small class="text-muted">${x.code}</small></td>
+    <td><div class="progress" style="height:6px"><div class="progress-bar" style="width:${Math.min(100, x.freq/30*100)}%; background-color: var(--hl-red);"></div></div><small class="text-muted">${x.freq}/30 ngày</small></td>
+    <td>${fmt(x.last)}</td>
+    <td><span class="badge bg-${x.status} rounded-pill">${x.status}</span></td>
+    <td class="text-center text-warning fw-bold">${x.soon}</td>
+    <td class="text-center fw-bold" style="color: var(--hl-red);">${x.expired}</td>
+    <td class="text-end">
+      <button class="btn btn-sm btn-outline-danger fw-bold rounded-pill px-3" onclick="openStore('${x.code}',true)">Xem CH</button>
+      <button class="btn btn-sm btn-outline-danger fw-bold rounded-circle ms-1" onclick="sendMail('${x.code}')"><i class="bi bi-envelope"></i></button>
+    </td>
+  </tr>`).join('');
+    
+  $('#tb-mail').innerHTML = list.map(x => `<tr>
+    <td class="fw-bold" style="color: var(--hl-brown);">${x.name}</td>
+    <td><code>${x.code}</code></td>
+    <td><input class="form-control form-control-sm border-secondary-subtle rounded-3" id="em-${x.code}" value="${x.email}"></td>
+    <td class="text-end"><button class="btn btn-sm btn-hl-red px-3" onclick="saveEmail('${x.code}')">Lưu</button></td>
+  </tr>`).join('');
+
+  $('#tb-master').innerHTML = RAW_MASTER.map((item, idx) => `<tr>
+    <td style="width:50px">${idx + 1}</td>
+    <td class="fw-bold" style="color: var(--hl-brown);">${item}</td>
+    <td class="text-end"><button class="btn btn-sm btn-outline-danger rounded-pill px-3" onclick="delMasterItem('${item}')"><i class="bi bi-trash"></i> Xóa</button></td>
+  </tr>`).join('');
+}
+
+async function openStore(code, fromAdmin) {
+  CUR = code;
+  $('#v-admin').classList.add('d-none'); $('#v-store').classList.remove('d-none');
+  $('#btnBack').classList.toggle('d-none', !fromAdmin);
+  
+  const r = await call('getStore', S.token, code);
+  if (r.masterProducts) {
+    $('#productList').innerHTML = r.masterProducts.map(p => `<option value="${p}">`).join('');
+  }
+
+  $('#ui-title').textContent = r.store.name;
+  $('#ui-sub').textContent = 'Mã CH: ' + r.store.code + ' • Email: ' + r.store.email;
+  
+  const it = r.items;
+  $('#k-total').textContent = it.length;
+  $('#k-soon').textContent = it.filter(i => i.days >= 0 && i.days <= r.warn).length;
+  $('#k-exp').textContent = it.filter(i => i.days < 0).length;
+  
+  $('#tb-items').innerHTML = it.length ? it.map(i => `<tr class="${rowCls(i.days)}">
+    <td class="fw-bold" style="color: var(--hl-brown);">${i.name}</td>
+    <td>${fmt(i.exp)}</td>
+    <td class="text-center">
+      <div class="qty-control">
+        <button class="qty-btn" onclick="changeQty(${i.row}, ${i.qty - 1})">-</button>
+        <input class="qty-input" type="number" value="${i.qty}" onchange="changeQty(${i.row}, this.value)">
+        <button class="qty-btn" onclick="changeQty(${i.row}, ${i.qty + 1})">+</button>
+      </div>
+    </td>
+    <td>${badge(i.days)}</td>
+    <td class="text-end"><button class="btn btn-sm btn-outline-danger rounded-circle" onclick="delItem(${i.row})"><i class="bi bi-trash"></i></button></td>
+  </tr>`).join('') : '<tr><td colspan="5" class="text-center text-muted py-4">Chưa có sản phẩm nào được ghi nhận</td></tr>';
+}
+
+async function addItem() {
+  const name = $('#i-name').value.trim();
+  const rawExp = $('#i-exp').value;
+  if (!name || !rawExp) return toast('Vui lòng nhập đầy đủ Tên SP và Ngày hết hạn', false);
+  
+  let formattedExp = rawExp;
+  if (rawExp.includes('-')) {
+    const p = rawExp.split('-'); formattedExp = `${p[2]}/${p[1]}/${p[0]}`;
+  }
+  
+  const res = await call('addItem', S.token, CUR, { name: name, exp: formattedExp, qty: $('#i-qty').value });
+  toast(res.msg);
+  $('#i-name').value = ''; $('#i-exp').value = ''; $('#i-qty').value = 1;
+  openStore(CUR, S.role === 'admin');
+}
+
+/* THAY ĐỔI SỐ LƯỢNG SẢN PHẨM */
+async function changeQty(row, newQty) {
+  const val = Number(newQty);
+  if (isNaN(val) || val <= 0) {
+    if (!confirm('Số lượng về 0. Bạn có muốn xóa sản phẩm này?')) {
+      openStore(CUR, S.role === 'admin'); return;
+    }
+  }
+  const res = await call('updateItemQty', S.token, row, val);
+  toast(res.msg);
+  openStore(CUR, S.role === 'admin');
+}
+
+async function delItem(row) {
+  if (!confirm('Xác nhận xóa sản phẩm này khỏi danh sách?')) return;
+  await call('removeItem', S.token, row);
+  toast('Đã xóa sản phẩm');
+  openStore(CUR, S.role === 'admin');
+}
+
+async function addMasterItem() {
+  const val = $('#m-new-name').value.trim();
+  if (!val) return toast('Vui lòng nhập tên nguyên liệu', false);
+  await call('addMasterProduct', S.token, val);
+  $('#m-new-name').value = ''; toast('Đã thêm nguyên liệu!'); showAdmin();
+}
+
+async function delMasterItem(name) {
+  if (!confirm(`Xóa "${name}" khỏi danh mục gợi ý?`)) return;
+  await call('removeMasterProduct', S.token, name); toast('Đã xóa!'); showAdmin();
+}
+
+async function saveEmail(code) {
+  await call('updateEmail', S.token, code, $('#em-' + code).value); toast('Đã cập nhật Email!');
+}
+
+async function sendMail(code) {
+  const r = await call('sendMail', S.token, code || CUR); toast(r.msg, r.ok);
+}
+
+async function sendAll() {
+  if (!confirm('Gửi mail cảnh báo cho tất cả cửa hàng?')) return;
+  const r = await call('sendAll', S.token); toast(r.msg); showAdmin();
+}
+</script>
+</body>
+</html>
